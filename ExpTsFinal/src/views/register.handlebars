@@ -1,0 +1,24 @@
+<h1>Criar Conta</h1>
+
+<form action="/register" method="POST">
+  <label>Nome completo:</label><br>
+  <input type="text" name="name" required><br><br>
+
+  <label>Email:</label><br>
+  <input type="email" name="email" required><br><br>
+
+  <label>Senha:</label><br>
+  <input type="password" name="password" required><br><br>
+
+  <label>Repetir senha:</label><br>
+  <input type="password" name="repeatPassword" required><br><br>
+
+  <label>Curso:</label><br>
+  <select name="majorId" required>
+    {{#each majors}}
+      <option value="{{this.id}}">{{this.name}}</option>
+    {{/each}}
+  </select><br><br>
+
+  <button type="submit">Cadastrar</button>
+</form>

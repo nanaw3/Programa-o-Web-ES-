@@ -1,0 +1,46 @@
+<h1>Lista de Cursos (Majors)</h1>
+<a href="/majors/create">Novo Curso</a>
+
+<ul>
+  {{#each majors}}
+    <li>
+      {{this.name}} ({{this.email}})
+      <button class="delete-btn" data-id="{{this.id}}" data-name="{{this.name}}">Excluir</button>
+
+    </li>
+  {{/each}}
+</ul>
+
+<!-- Modal -->
+<div id="confirmModal" style="display:none; position:fixed; top:30%; left:30%; background:white; padding:20px; border:1px solid #ccc;">
+  <p id="modalText">Tem certeza que deseja excluir?</p>
+  <button id="confirmYes">Sim</button>
+  <button id="confirmNo">Cancelar</button>
+</div>
+
+<script>
+  const modal = document.getElementById('confirmModal');
+  const modalText = document.getElementById('modalText');
+  let selectedId = null;
+
+  document.querySelectorAll('.delete-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      selectedId = btn.dataset.id;
+      modalText.innerText = `Deseja excluir "${btn.dataset.name}"?`;
+      modal.style.display = 'block';
+    });
+  });
+
+  document.getElementById('confirmYes').onclick = async () => {
+    if (selectedId) {
+      await fetch(`/majors/${selectedId}/delete`, { method: 'POST' });
+      location.reload();
+    }
+  };
+
+  document.getElementById('confirmNo').onclick = () => {
+    modal.style.display = 'none';
+    selectedId = null;
+  };
+</script>
+

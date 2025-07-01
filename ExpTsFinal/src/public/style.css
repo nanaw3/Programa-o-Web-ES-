@@ -1,0 +1,15 @@
+body {
+  background-color: #fdfdfd;
+  font-family: sans-serif;
+}
+
+h1 {
+  color: #4e79a7;
+}
+
+p.mensagem {
+  color: #c0392b;
+  font-weight: bold;
+}
+
+/*# sourceMappingURL=style.css.map */
