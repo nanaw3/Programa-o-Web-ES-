@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Tabela de Multiplicação</title>
+  <style>
+    body {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      margin: 10px;
+      font-family: sans-serif;
+    }
+
+    table {
+      border: 3px double black;
+      border-collapse: collapse;
+      margin: 5px;
+      font-size: 14px;
+    }
+
+    th {
+      font-weight: bold;
+      text-align: center;
+      border: 1px solid black;
+      background-color: #f9f9f9;
+    }
+
+    td {
+      border: 1px solid black;
+      padding: 2px 6px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    for (let i = 1; i <= 10; i++) {
+      const table = document.createElement('table');
+
+      // Primeira linha com o título da tabela
+      const headerRow = document.createElement('tr');
+      const th = document.createElement('th');
+      th.colSpan = 2;
+      th.textContent = `Produtos de ${i}`;
+      headerRow.appendChild(th);
+      table.appendChild(headerRow);
+
+      // Linhas da tabuada
+      for (let j = 1; j <= 10; j++) {
+        const row = document.createElement('tr');
+
+        const tdExpr = document.createElement('td');
+        tdExpr.textContent = `${i}x${j}`;
+        row.appendChild(tdExpr);
+
+        const tdResult = document.createElement('td');
+        tdResult.textContent = i * j;
+        row.appendChild(tdResult);
+
+        table.appendChild(row);
+      }
+
+      document.body.appendChild(table);
+    }
+  </script>
+</body>
+</html>
