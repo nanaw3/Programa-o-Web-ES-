@@ -1,0 +1,27 @@
+{
+  "name": "expts",
+  "version": "1.0.0",
+  "type": "commonjs",
+  "scripts": {
+    "build": "tsc",
+    "sass": "sass src/scss/style.scss public/css/style.css",
+    "start": "cross-env NODE_ENV=development nodemon build/index.js",
+    "start:prod": "cross-env NODE_ENV=production node build/index.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "express-handlebars": "^8.0.3",
+    "lorem-ipsum": "^2.0.8"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.23",
+    "@types/express-handlebars": "^5.3.1",
+    "@types/lorem-ipsum": "^1.0.2",
+    "@types/node": "^20.19.4",
+    "cross-env": "^7.0.3",
+    "nodemon": "^3.1.10",
+    "sass": "^1.89.2",
+    "typescript": "^5.8.3"
+  }
+}

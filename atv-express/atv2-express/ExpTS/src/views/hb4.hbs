@@ -1,0 +1,8 @@
+<h2>Technologias baseadas no NodeJS:</h2>
+<ul>
+  {{#each technologies}}
+    {{#ifPoweredByNodejs poweredByNodejs}}
+      <li>{{name}} - {{type}}</li>
+    {{/ifPoweredByNodejs}}
+  {{/each}}
+</ul>
