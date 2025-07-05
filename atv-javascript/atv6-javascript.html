@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Rastro do Mouse</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background-color: #fdfdd4;
+      position: relative;
+    }
+
+    .ponto {
+      width: 10px;
+      height: 10px;
+      background-color: blue;
+      border-radius: 50%;
+      position: absolute;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    const rastros = [];
+
+    document.addEventListener('mousemove', e => {
+      const ponto = document.createElement('div');
+      ponto.className = 'ponto';
+      ponto.style.left = `${e.pageX}px`;
+      ponto.style.top = `${e.pageY}px`;
+
+      document.body.appendChild(ponto);
+      rastros.push(ponto);
+
+      // Mantém no máximo 8 pontos
+      if (rastros.length > 8) {
+        const antigo = rastros.shift();
+        antigo.remove();
+      }
+    });
+  </script>
+</body>
+</html>

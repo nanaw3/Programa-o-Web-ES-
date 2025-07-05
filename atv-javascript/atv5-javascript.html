@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Grafico de Barras</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 30px;
+    }
+
+    h1 {
+      font-size: 24px;
+    }
+
+    input {
+      width: 50px;
+      padding: 4px;
+    }
+
+    #grafico {
+      margin-top: 20px;
+      height: 200px;
+      display: flex;
+      align-items: flex-end;
+      gap: 5px;
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+
+    .barra {
+      background-color: red;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <h1>Um Gráfico de Barras</h1>
+
+  <div>
+    <label>Informe a altura das barras:</label>
+    <input type="number" class="altura" value="100">
+    <input type="number" class="altura" value="150">
+    <input type="number" class="altura" value="120">
+    <input type="number" class="altura" value="80">
+    <input type="number" class="altura" value="40">
+  </div>
+
+  <div>
+    <label>Informe a largura das barras:</label>
+    <input type="number" id="largura" value="30">
+  </div>
+
+  <button onclick="desenhar()">Desenhar o gráfico</button>
+
+  <div id="grafico"></div>
+
+  <script>
+    function desenhar() {
+      const alturaInputs = document.querySelectorAll('.altura');
+      const largura = parseInt(document.getElementById('largura').value);
+      const grafico = document.getElementById('grafico');
+
+      grafico.innerHTML = ''; // Limpa gráfico anterior
+
+      alturaInputs.forEach(input => {
+        const altura = parseInt(input.value);
+        if (!isNaN(altura)) {
+          const barra = document.createElement('div');
+          barra.className = 'barra';
+          barra.style.width = `${largura}px`;
+          barra.style.height = `${altura}px`;
+          grafico.appendChild(barra);
+        }
+      });
+    }
+  </script>
+</body>
+</html>
