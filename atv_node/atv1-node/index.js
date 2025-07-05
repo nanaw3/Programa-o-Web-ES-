@@ -1,7 +1,10 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-require('dotenv').config();
+const dotenv = require('dotenv');
+
+const envFile = `.env.${process.env.NODE_ENV || 'development'}`;
+dotenv.config({ path: envFile });
 
 const pasta = process.argv[2];
 
@@ -41,5 +44,5 @@ http.createServer((req, res) => {
     res.end(html);
   });
 }).listen(port, () => {
-  console.log(`Servidor rodando em http://localhost:${port}`);
+  console.log(`Servidor rodando em http://localhost:${port} [env: ${process.env.NODE_ENV}]`);
 });
