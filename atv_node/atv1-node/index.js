@@ -1,7 +1,7 @@
-import http from 'http';
-import { readdir, readFile } from 'fs/promises';
-import { resolve, join } from 'path';
-import dotenv from 'dotenv';
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+const dotenv = require('dotenv');
 
 const envFile = `.env.${process.env.NODE_ENV || 'development'}`;
 dotenv.config({ path: envFile });
@@ -16,35 +16,32 @@ if (!pasta) {
 
 const port = process.env.PORT || 3000; 
 
-const server = http.createServer(async (req, res) => {
-  const url = decodeURIComponent(req.url);
-if (url === '/') {
-    try {
-      const arquivos = await readdir(pasta);
-      const lista = arquivos
-        .map(arquivo => `<li><a href="/${arquivo}">${arquivo}</a></li>`)
-        .join('');
-      res.writeHead(200, { 'Content-Type': 'text/html' });
-      res.end(`<ul>${lista}</ul>`);
-    } catch (err) {
-      res.writeHead(500);
-      res.end('Erro ao ler diretorio');
-    }
-  } else {
-    try {
-      const caminho = resolve(join(pasta, url.slice(1)));
-      const conteudo = await readFile(caminho, 'utf8');
-      res.writeHead(200, { 'Content-Type': 'text/html' });
-      res.end(`
-        <a href="/">Voltar</a>
-        <pre>${conteudo}</pre>
-      `);
-    } catch (err) {
-      res.writeHead(404);
-      res.end('Arquivo nao encontrado');
-    }
-  }
-});
-server.listen(port, () => {
-  console.log(`🚀 Servidor em http://localhost:${port}`);
+http.createServer((req, res) => {
+  fs.readdir(pasta, (err, arquivos) => {
+    if (err) {
+      res.writeHead(500, { 'Content-Type': 'text/plain' });
+      res.end('Erro ao ler diretorio.');
+      return;
+    }  
+ const listaHtml = arquivos.map(nome => `<li>${nome}</li>`).join('');
+    const html = `
+      <!DOCTYPE html>
+      <html lang="pt-BR">
+      <head>
+        <meta charset="UTF-8">
+        <title>Arquivos de ${pasta}</title>
+      </head>
+      <body>
+        <h1>Arquivos no diretório: ${pasta}</h1>
+        <ul>${listaHtml}</ul>
+      </body>
+      </html>
+    `;
+
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.end(html);
+    
+  });
+}).listen(port, () => {
+  console.log(`Servidor rodando em http://localhost:${port} [env: ${process.env.NODE_ENV}]`);
 });
