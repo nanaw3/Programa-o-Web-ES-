@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculo do Circulo com ts</title>
+  <style>
+     body {
+      font-family: sans-serif;
+      margin: 40px;
+    }
+
+    .linha {
+      display: flex;
+      align-items: center;
+      margin-bottom: 2px;
+    }
+
+    .linha label {
+      width: 115px;
+    }
+
+    .linha input {
+      width: 100px;
+      padding: 4px;
+    }
+
+    button {
+      margin-left: 5px;
+      padding: 4px 10px;
+    }
+</style>
+</head>
+<body>
+   <div class="linha">
+    <label for="raio">Informe o raio</label>
+    <input type="number" id="raio" />
+    <button onclick="calcular()">OK</button>
+  </div>
+
+  <div class="linha">
+    <label for="area">Área do círculo</label>
+    <input type="text" id="area" readonly />
+  </div>
+
+  <div class="linha">
+    <label for="circunferencia">Circunferência</label>
+    <input type="text" id="circunferencia" readonly />
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
