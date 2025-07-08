@@ -1,0 +1,23 @@
+{{!< layouts/main}}
+
+<h2>Editar Perfil</h2>
+
+<form action="/profile/edit" method="POST" class="p-4 bg-light rounded shadow-sm">
+  <div class="mb-3">
+    <label>Nome</label>
+    <input type="text" name="full_name" class="form-control" value="{{user.full_name}}" required>
+  </div>
+  <div class="mb-3">
+    <label>Email</label>
+    <input type="email" name="email" class="form-control" value="{{user.email}}" required>
+  </div>
+  <div class="mb-3">
+    <label>Curso</label>
+    <select name="major_id" class="form-select">
+      {{#each majors}}
+        <option value="{{id}}">{{name}}</option>
+      {{/each}}
+    </select>
+  </div>
+  <button class="btn btn-primary">Salvar</button>
+</form>

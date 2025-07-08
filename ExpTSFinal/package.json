@@ -1,0 +1,39 @@
+{
+  "name": "expts",
+  "version": "1.0.0",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "ts-node --project tsconfig.json src/index.ts",
+    "clean": "rd /s /q build && echo Build limpa.",
+    "build": "npm run clean && tsc && npm run copy:views",
+    "copy:views": "copyfiles -u 2 \"src/views/**/*.hbs\" build/views",
+    "sass": "sass src/scss/style.scss public/css/style.css",
+    "start": "cross-env NODE_ENV=development nodemon build/index.js",
+    "start:prod": "cross-env NODE_ENV=production node build/index.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.11.1",
+    "bcrypt": "^6.0.0",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "express-handlebars": "^8.0.3",
+    "express-session": "^1.18.1",
+    "lorem-ipsum": "^2.0.8",
+    "method-override": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/express": "^4.17.23",
+    "@types/express-handlebars": "^5.3.1",
+    "@types/express-session": "^1.18.2",
+    "@types/lorem-ipsum": "^1.0.2",
+    "@types/method-override": "^3.0.0",
+    "@types/node": "^20.19.4",
+    "copyfiles": "^2.4.1",
+    "cross-env": "^7.0.3",
+    "nodemon": "^3.1.10",
+    "prisma": "^6.11.1",
+    "sass": "^1.89.2",
+    "typescript": "^5.8.3"
+  }
+}

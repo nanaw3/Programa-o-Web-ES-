@@ -1,0 +1,42 @@
+<h1>Cursos (Majors)</h1>
+
+<a href="/majors/create" class="btn btn-success mb-3">Novo Curso</a>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each majors}}
+      <tr>
+        <td>{{name}}</td>
+        <td>
+          <a href="/majors/edit/{{id}}" class="btn btn-warning btn-sm me-2">Editar</a>
+          <button class="btn btn-danger btn-sm" onclick="abrirModal({{id}})">Excluir</button>
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+{{> deleteModal "curso" }}
+
+<script>
+  let idParaExcluir = null;
+
+  function abrirModal(id) {
+    idParaExcluir = id;
+    const modal = new bootstrap.Modal(document.getElementById('modalDelete'));
+    modal.show();
+  }
+
+  function confirmarExclusao() {
+    fetch(`/majors/${idParaExcluir}`, {
+      method: 'DELETE'
+    }).then(() => {
+      location.reload();
+    });
+  }
+</script>
