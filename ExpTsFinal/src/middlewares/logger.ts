@@ -1,24 +1,30 @@
-import { Request, Response, NextFunction } from 'express';
-import fs from 'fs';
-import path from 'path';
+import fs from "fs"
+import path from "path"
+import { Request, Response, NextFunction } from "express"
 
-const logPath = process.env.LOGS_PATH || './logs/app.log';
+const logDir = process.env.LOG_DIR || "logs"
+const logType = process.env.LOG_TYPE || "simples"
 
-// Garante que a pasta exista
-const logDir = path.dirname(logPath);
-if (!fs.existsSync(logDir)) {
-  fs.mkdirSync(logDir, { recursive: true });
-}
+export function logger(req: Request, res: Response, next: NextFunction) {
+  const timestamp = new Date().toISOString()
+  const url = req.url
+  const method = req.method
+  const httpVersion = req.httpVersion
+  const userAgent = req.get("User-Agent") || ""
 
-export function logger(format: 'simples' | 'completo' = 'simples') {
-  return (req: Request, res: Response, next: NextFunction) => {
-    const now = new Date().toISOString();
-    const basicInfo = `[${now}] ${req.method} ${req.url}`;
-    const fullInfo = `${basicInfo} HTTP/${req.httpVersion} ${req.headers['user-agent']}`;
+  const logLine =
+    logType === "completo"
+      ? `${timestamp} ${method} ${url} HTTP/${httpVersion} ${userAgent}\n`
+      : `${timestamp} ${method} ${url}\n`
 
-    const logLine = format === 'completo' ? fullInfo : basicInfo;
+  // Cria a pasta se não existir
+  if (!fs.existsSync(logDir)) {
+    fs.mkdirSync(logDir)
+  }
 
-    fs.appendFileSync(logPath, logLine + '\n');
-    next();
-  };
+  fs.appendFile(path.join(logDir, "access.log"), logLine, (err) => {
+    if (err) console.error("Erro ao escrever log:", err)
+  })
+
+  next()
 }

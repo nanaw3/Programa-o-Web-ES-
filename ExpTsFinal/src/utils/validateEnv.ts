@@ -1,8 +1,12 @@
-import { cleanEnv, port, str } from 'envalid';
-
 export function validateEnv() {
-  cleanEnv(process.env, {
-    PORT: port(),
-    LOGS_PATH: str({ default: './logs/app.log' }) // já antecipa o uso do logger da etapa #4
-  });
+  const port = process.env.PORT
+
+  if (!port) {
+    throw new Error("A variável de ambiente PORT não está definida.")
+  }
+
+  const portNum = Number(port)
+  if (isNaN(portNum) || portNum <= 0) {
+    throw new Error("A variável de ambiente PORT deve ser um número positivo.")
+  }
 }

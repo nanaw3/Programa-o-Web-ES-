@@ -1,67 +1,69 @@
-import express from 'express';
-import { engine } from 'express-handlebars';
+import express from "express";
 import path from 'path';
-import dotenv from 'dotenv';
-import { validateEnv } from './utils/validateEnv';
-import { logger }      from './middlewares/logger';
-import router           from './router/router';
+import handlebarsRouter from "./routes/handlebars";
+import { config } from 'dotenv';
+import { validateEnv } from "./utils/validateEnv";
+import { logger } from "./middlewares/logger";
+import loremRouter from "./routes/lorem";
+import { UnknownObject } from "express-handlebars/types";
+import router from './routes/router';
+import { engine } from "express-handlebars";
+import * as exphbs from 'express-handlebars';
+import methodOverride from 'method-override';
 import session from 'express-session';
 
-dotenv.config();
+const env = process.env.NODE_ENV || 'development';
+config({ path: `.env.${env}` });
 validateEnv();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const port = Number(process.env.PORT);
 
+// Logger/rotas iniciais
+app.use(logger);
+app.use("/", loremRouter);
+
+// Handlebars
+app.engine('hbs', engine({
+  extname: '.hbs',
+  layoutsDir: path.join(__dirname, 'views', 'layouts'),
+  defaultLayout: 'main',
+  helpers: {
+    ifPoweredByNodejs: function (poweredByNodejs: boolean, options: { fn: (arg0: any) => any }) {
+      return poweredByNodejs ? options.fn(this) : "";
+    }
+  }
+}));
+app.set('view engine', 'hbs'); 
+app.set('views', path.join(__dirname, '..', 'src', 'views'));
+
+//login
 app.use(session({
-  secret: 'chave_secreta',
+  secret: 'segredo',
   resave: false,
   saveUninitialized: false
 }));
 
-app.engine('handlebars', engine({
-  helpers: {
-    nodeTechList: function (technologies: any[]) {
-      let result = '<ul>';
-      technologies.forEach(tech => {
-        if (tech.poweredByNodejs) {
-          result += `<li>${tech.name} (${tech.type})</li>`;
-        }
-      });
-      result += '</ul>';
-      return result;
-    }
-  }
-}));
 
-app.set('view engine', 'handlebars');
-app.set('views', path.join(__dirname, 'views'));
-
-
-app.use('/jogo', express.static(path.join(__dirname, 'public')));
-
-
-app.use(logger('completo'));
+// Middlewares
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());  
+app.use(express.static(path.join(__dirname, '..', 'public')));
+app.use((req, res, next) => {
+  res.locals.user = req.session.user || null;
+  next();
+});
+
+// Rotas
 app.use(router);
-
-app.use((req, res, next) => {
-  res.locals.userName = req.session?.userName;
-  next();
-});
-
-router.get('/teste', (_req, res) => {
-  res.render('teste');
-});
-
-app.use('/', router);
-
-app.use((req, res, next) => {
-  res.locals.session = req.session;
-  next();
-});
+app.use("/", handlebarsRouter);
 
 
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
+//method override
+app.use(methodOverride('_method'));
+
+
+// Chama do servidor
+app.listen(port, () => {
+  console.log(`Servidor rodando na porta ${port}`);
+})

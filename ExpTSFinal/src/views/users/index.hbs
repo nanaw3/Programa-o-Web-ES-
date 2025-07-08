@@ -1,0 +1,27 @@
+<h1>Usuários</h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Email</th>
+      <th>Curso</th>
+      <th>Sigla</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each users}}
+      <tr>
+        <td>{{fullName}}</td>
+        <td>{{email}}</td>
+        <td>{{major.name}}</td>
+        <td>{{major.sigla}}</td>
+        <td>
+          <button class="btn btn-danger btn-sm" data-id="{{id}}" onclick="abrirModal({{id}})">Excluir</button>
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+{{> deleteModal "user" }}
